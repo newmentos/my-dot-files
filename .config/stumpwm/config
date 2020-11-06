@@ -1,0 +1,270 @@
+;; -*-lisp-*-
+;;
+;; Here is a sample .stumpwmrc file
+(require :stumpwm)
+(in-package :stumpwm)
+
+;;(setf *modifiers*
+;;  #S(modifiers
+;;    :meta (:mod-1)
+;;    :alt nil
+;;    :hyper (:mod-4)
+;;    :super (:mod-3)
+;;    :numlock (:mod-2)))
+
+;;;; Назначем префиксную клавишу флажек с эмблемой майкрософт
+(run-shell-command "xmodmap -e 'clear mod4'" t)
+(run-shell-command "xmodmap -e \'keycode 133 = F20\'" t)
+(set-prefix-key (kbd "F20"))
+
+;; Назначаем префиксную комбинацию клавиш
+;;(set-prefix-key (kbd "C-z"))
+;;(set-prefix-key (kbd "mod-4"))
+;;(set-prefix-key (kbd "C-t"))
+;;(set-prefix-key (kbd "Menu"))
+
+
+;; (require :swank)
+;; (swank-loader:init)
+;; (swank:create-server :port 4004
+;;                      :style swank:*communication-style*
+;;                      :dont-close t)
+
+(require :slynk)
+(slynk:create-server :port 4008
+                     :dont-close t)
+
+;; Перемещаем диалоговые сообщения в центр экрана
+(setf *message-window-gravity* :center)
+(setf *message-window-input-gravity* :center)
+(setf *message-window-timer* :center)
+(setf *input-window-gravity* :center)
+
+;; Message window font
+;;(set-font "-xos4-terminus-medium-r-normal--14-140-72-72-c-80-iso8859-15")
+;;(set-font "-misc-dejavu sans mono-bold-r-normal--17--100--m-0-iso8859-")
+;;(stumpwm:set-font "PT Mono 14")
+(set-font "-*-terminus-medium-r-normal-*-16-*-*-*-*-*-iso10646-1")
+
+
+;;;; Задаем формат заголовков окон
+(setf *window-format* "%m%n%s%c")
+;; ;;;; The Mode Line
+;; (setf *mode-line-background-color* "DarkRed"
+;;       *mode-line-foreground-color* "White"
+;;       *mode-line-border-color*     "White"
+;;       *mode-line-timeout*          1
+;;       *mode-line-screen-position*  :top
+;;       *window-format*           "^B^8*%n%s%m%30t  :: ^7*"
+;;       *group-format*           "%t"
+;;       *screen-mode-line-format* (list "^B" `(:eval (stumpwm:run-shell-command "printf \"`date +'%a, %d %B %H:%M'`\"" t))
+;;                                       "  ^ B||  "
+;;                                       `(:eval (stumpwm:run-shell-command "printf \"`sensors| grep temp3| awk '&#123;print ($2)}'`\"" t))
+;;                                       "   ||   ^b^7*%g^B   ||   %w  ^1*%N" ; Current group and frames
+;;                                     ))
+
+;; Show time, cpu usage and network traffic in the modeline
+;;
+;; (setf *screen-mode-line-format*
+;;       (list '(:eval (run-shell-command "date '+%R, %F %a'|tr -d [:cntrl:]" t)) " | %t | %c| %l | [^B%n^b] %W"))
+
+(setf stumpwm:*screen-mode-line-format*
+      (list "%g %W | "
+            '(:eval (stumpwm:run-shell-command "date" t))))
+
+;; Включаем статусную строку
+;; (stumpwm:toggle-mode-line (stumpwm:current-screen)
+;;                          (stumpwm:current-head))
+;; turn on/off the mode line for the current screen only.
+(if (not (head-mode-line (current-head)))
+    (toggle-mode-line (current-screen) (current-head)))
+
+;; предлагает пользователю завершить заготовку команды и выполнить ее
+;; первый аргумент начало пользовательской команды
+(defcommand colon1 (&optional (initial "")) (:rest)
+  (let ((cmd (read-one-line (current-screen) ": " :initial-input initial)))
+    (when cmd
+      (eval-command cmd t))))
+
+
+;;;; Run emacs https://babbagefiles.xyz/emacs_windows_stumpwm/
+(defcommand run-or-raise-emacsclient () ()
+		    (run-or-raise-prefer-group "emacs" "Emacs"))
+(defcommand decide-on-emacsclient () ()
+ (if (equal (run-shell-command "pgrep \"emacsclient\"" t) "")
+     (run-shell-command "emacsclient -c")
+     (run-or-raise-emacsclient)))
+(define-key *root-map* (kbd "s-e") "decide-on-emacsclient")
+(define-key *root-map* (kbd "C-e") "decide-on-emacsclient")
+(define-key *root-map* (kbd "e") "decide-on-emacsclient")
+(defcommand emacsclient-launch () ()
+  (run-shell-command "emacsclient -c"))
+(define-key *root-map* (kbd "s-E") "emacsclient-launch")
+(define-key *root-map* (kbd "C-E") "emacsclient-launch")
+(define-key *root-map* (kbd "E") "emacsclient-launch")
+;;;; So that if I want to launch a new emacsclient window instead of switching to an existing one,
+;;;; I can do so using one of series of keybindings parallel to the previous set, but with a
+;;;; capital E rather than a lowercase one.
+
+
+;;;; https://github.com/sed-seyedi/sed-stumpwmrc/blob/master/my-stumpwmrc
+;; dmenu
+(defcommand dmenu() ()
+  (run-shell-command "rofi -show run -modi run -location 1 -width 100 \
+		 -lines 2 -line-margin 0 -line-padding 1 \
+		 -separator-style none -font \"mono 10\" -columns 9 -bw 0 \
+		 -disable-history \
+		 -hide-scrollbar \
+		 -color-window \"#222222, #222222, #b1b4b3\" \
+		 -color-normal \"#222222, #b1b4b3, #222222, #005577, #b1b4b3\" \
+		 -color-active \"#222222, #b1b4b3, #222222, #007763, #b1b4b3\" \
+		 -color-urgent \"#222222, #b1b4b3, #222222, #77003d, #b1b4b3\" \
+		 -kb-row-select \"Tab\" -kb-row-tab \"\""))
+(define-key *root-map* (kbd "M-d") "dmenu")
+;; take screenshot region
+(defcommand region-screen-shot()()
+  (run-shell-command "gnome-screenshot -a"))
+(define-key *root-map* (kbd ",") "region-screen-shot")
+
+;; Read some doc
+(define-key *root-map* (kbd "d") "exec evince")
+;; Browse somewhere
+(define-key *root-map* (kbd "b") "colon1 exec nyxt http://www.")
+;; Ssh somewhere
+(define-key *root-map* (kbd "C-s") "colon1 exec lxterminal -e ssh ")
+;; Lock screen
+;;(define-key *root-map* (kbd "C-l") "exec xlock")
+(define-key *root-map* (kbd "C-l") "exec xscreensaver-command -lock")
+;; Run Emacs
+;(define-key *root-map* (kbd "e") "exec emacs")
+;(define-key *root-map* (kbd "C-e") "exec emacs")
+;; Replace xterm on lxterminal
+(define-key *root-map* (kbd "c") "exec lxterminal")
+(define-key *root-map* (kbd "C-c") "exec lxterminal")
+;;; Viber
+(define-key *root-map* (kbd "v") "exec env LD_LIBRARY_PATH=/opt/viber/lib viber")
+;;; Telegram-desktop
+(define-key *root-map* (kbd "t") "exec telegram-desktop")
+;;;; Run MS Word
+(define-key *root-map* (kbd "M-w") "exec wine $HOME'/wine32/drive_c/Program Files/Microsoft Office/Office14/WINWORD.EXE'")
+;;;; Run MS Excel
+(define-key *root-map* (kbd "M-c") "exec wine $HOME'/wine32/drive_c/Program Files/Microsoft Office/Office14/EXCEL.EXE'")
+
+;; Web jump (works for Google and Imdb)
+(defmacro make-web-jump (name prefix)
+  `(defcommand ,(intern name) (search) ((:rest ,(concatenate 'string name " search: ")))
+    (substitute #\+ #\Space search)
+    (run-shell-command (concatenate 'string ,prefix search))))
+
+(make-web-jump "google" "nyxt http://www.google.fr/search?q=")
+(make-web-jump "imdb" "nyxt http://www.imdb.com/find?q=")
+
+;; C-t M-s is a terrble binding, but you get the idea.
+(define-key *root-map* (kbd "M-s") "google")
+(define-key *root-map* (kbd "i") "imdb")
+
+;;; Define window placement policy...
+
+;; Clear rules
+(clear-window-placement-rules)
+
+;; Create some new virtual desktops (called groups in stumpwm):
+(run-commands "gnewbg Web" "gnewbg Dev" "gnewbg Work" "gnewbg IM" "gnewbg Media" "gnewbg vbox")
+
+;; My window placement rules:
+(define-frame-preference "Default"
+;;   ;; frame raise lock (lock AND raise == jumpto)
+;;   (0 t   t :title "emacs")
+;;   (0 t   t :class "XTerm")
+     (0 nil  nil :class "lxterminal")
+     )
+
+(define-frame-preference "Dev"
+  ;; frame raise lock (lock AND raise == jumpto)
+  (0 t     t :title "emacs")
+  (1 nil   t :class "XTerm"))
+
+(define-frame-preference "Work"
+  ;; frame raise lock (lock AND raise == jumpto)
+  (0 nil t :class "Gnome-calendar")
+  (0 t   t :class "wine")
+  (1 nil  t :class "winword.exe")
+  (1 nil  t :class "excel.exe"))
+
+;;(define-frame-preference "Emacs"
+;;  (0 t t :restore "emacs-editing-dump" :title "...xdvi")
+;;  (1 t t :create "emacs-dump" :class "Emacs"))
+
+(define-frame-preference "Web"
+  ;; frame raise lock (lock AND raise == jumpto)
+  (0 nil   t :class "Firefox")
+  (1 nil   t :class "Brave")
+  (2 nil   t :class "next"))
+
+(define-frame-preference "Media"
+  ;; frame raise lock (lock AND raise == jumpto)
+  (0 nil   t :instance "aumix")
+  (1 nil   t :class "MPlayer")
+  (2 nil   t :class "Avidemux")
+  (2 nil   t :class "Shortwave"))
+
+;; Last rule to match takes precedence!
+;; TIP: if the argument to :title or :role begins with an ellipsis, a substring
+;; match is performed.
+;; TIP: if the :create flag is set then a missing group will be created and
+;; restored from *data-dir*/create file.
+;; TIP: if the :restore flag is set then group dump is restored even for an
+;; existing group using *data-dir*/restore file.
+
+(define-frame-preference "IM"
+  (0 nil t :title "Telegram")
+  (0 nil t :title "Viber")
+  (1 nil t :class "QuiteRss")
+  (2 nil t :class "Skype")
+  (3 nil t :class "discord"))
+
+;;;; http://linuxoid.in/Конфиг:stumpwm
+;; (define-frame-preference "Ardour"
+;;   (0 t   t   :instance "ardour_editor" :type :normal)
+;;   (0 t   t   :title "Ardour - Session Control")
+;;   (0 nil nil :class "XTerm")
+;;   (1 t   nil :type :normal)
+;;   (1 t   t   :instance "ardour_mixer")
+;;   (2 t   t   :instance "jvmetro")
+;;   (1 t   t   :instance "qjackctl")
+;;   (3 t   t   :instance "qjackctl" :role "qjackctlMainForm"))
+;; (define-frame-preference "Shareland"
+;;   (0 t   nil :class "XTerm")
+;;   (1 nil t   :class "aMule"))
+
+;;;; XKeyboard is extension for common lisp clx library. (https://github.com/filonenko-mikhail/clx-xkeyboard)
+;; (pushnew "/home/newmentos/.stumpwm.d/modules/clx-xkeyboard/" asdf:*central-registry*)
+;; (load "/home/newmentos/.stumpwm.d/modules/clx-xkeyboard/test/stumperwindowlayout.lisp")
+;; (run-commands "enable-per-window-layout")
+
+;;;; Load tray module
+(stumpwm:add-to-load-path "/home/newmentos/.stumpwm.d/modules/modeline/stumptray")
+(require "xembed")
+(load-module "stumptray")
+(stumptray:stumptray)
+(stumptray:systray-move-icon-right)
+
+;;;; Load radio module
+;;(stumpwm:add-to-load-path "/home/newmentos/.stumpwm.d/modules/media/stump-radio/")
+;;(load-module "stump-radio")
+;;(stump-radio:radio-start)
+
+;;;; Define the background window
+;; (defvar *background-image-path* "/home/newmentos/Picture/Wallpapers/")
+;; (defun select-random-background-image ()
+;;    "Select a random image"
+;;    (let ((file-list (directory (concatenate 'string *background-image-path* "*.jpg")))
+;;          (*random-state* (make-random-state t)))
+;;      (namestring (nth (random (length file-list)) file-list))))
+;;(run-shell-command (concatenate 'string "display -window root -geometry '-0-0' -resize '1920x1080'" (select-random-background-image)))
+;;(run-shell-command (concatenate 'string "feh --bg-scale" (select-random-background-image)))
+(run-shell-command "feh --bg-scale '/home/newmentos/Изображения/Wallpapers/Archlinux/Derek\ Taylor/0213.jpg'")
+
+;;;; Set the mouse policy to focus follows mouse;
+;;(setf *mouse-focus-policy* :sloppy) ;; :click, :ignore, :sloppy
+(setf *mouse-focus-policy* :click)
