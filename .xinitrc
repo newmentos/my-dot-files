@@ -35,13 +35,24 @@ fi
 export LANG=ru_RU.UTF-8
 export MM_CHARSET=UTF-8
 
+eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh) &
+export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+exec dbus-update-activation-environment --systemd DISPLAY &
+export GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+#keychain ~/.ssh/id_ecdsa &
+#[ -f ~/.keychain/$HOSTNAME-sh ] && . ~/.keychain/$HOSTNAME-sh 2>/dev/null &
+#[ -f ~/.keychain/$HOSTNAME-sh-gpg ] && . ~/.keychain/$HOSTNAME-sh-gpg 2>/dev/null &
+#eval $(ssh-agent) &
+
 export GDK_CORE_DEVICE_EVENTS=1
 
 #export G_FILENAME_ENCODING=@locale
 #export G_BROKEN_FILENAMES=1
 
 #export OOO_FORCE_DESKTOP=gnome
-#export GDK_USE_XFT=1
+export GDK_USE_XFT=1
 
 #export GTK_IM_MODULE="scim"
 #export QT_IM_MODULE="scim"
@@ -74,11 +85,12 @@ numlockx on &
 gnome-calendar &
 xscreensaver -nosplash &
 #compton -b &
-#picom -f --config ~/.config/picom/picom.conf &
+picom -f --config ~/.config/picom/picom.conf &
 #parcellite &
 volumeicon &
 #tilda &
 caffeine &
+#caffeine-indicator &
 #pidgin &
 #zoiper &
 #geany &
@@ -86,7 +98,9 @@ caffeine &
 #brave &
 #pcmanfm -d &
 #pcmanfm &
-nemo &
+#nemo &
+#lxterminal -e htop &
+lxterminal -e yay &
 #lxterminal -e pacaur -Syu &
 #lxterminal -e sudo bauerbill -Syu --aur &
 #lxterminal -e $XDG_CONFIG_HOME/opt/webchain-miner/webchain-miner &
@@ -122,28 +136,16 @@ shortwave &
 #chromium &
 #gnome-contacts &
 #vivaldi-stable &
-lxterminal -e htop &
-lxterminal -e yay &
 #twm &
 #xclock -geometry 50x50-1+1 &
 #xterm -geometry 80x50+494+51 &
 #xterm -geometry 80x20+494-0 &
-#exec xterm -geometry 80x66+0+0 -name login
 
-#keychain ~/.ssh/id_ecdsa &
-#[ -f ~/.keychain/$HOSTNAME-sh ] && . ~/.keychain/$HOSTNAME-sh 2>/dev/null &
-#[ -f ~/.keychain/$HOSTNAME-sh-gpg ] && . ~/.keychain/$HOSTNAME-sh-gpg 2>/dev/null &
-#eval $(ssh-agent) &
-
-#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg) &
-#export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
-#export GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
-#exec dbus-update-activation-environment --systemd DISPLAY &
-#exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 exec xmodmap ~/.xmodmap &
 exec xsetroot -cursor_name left_ptr &
 exec xset s off &
 exec xset b off &
+#exec xterm -geometry 80x66+0+0 -name login
 
 #pantheon-files &
 #gsettings-data-convert &
@@ -167,9 +169,9 @@ exec xset b off &
 #exec xrdb .Xresources & i3
 
 ### Start BSPWM
-#$HOME/.config/polybar/launch.sh
+$HOME/.config/polybar/launch.sh
 #exec sxhkd &
-#exec bspwm
+exec bspwm
 
 ### Start StumpWM
 #exec ssh-agent /usr/local/bin/stumpwm >> ~/stumpwm.log
@@ -177,8 +179,11 @@ exec xset b off &
 #exec sbcl --load $HOME/.local/bin/startstump >> $xlog 2>&1
 #exec ros run --load $HOME/.local/bin/startstump >> $xlog 2>&1
 #exec ssh-agent /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
-exec /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
+#exec /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
 
 # Start Awesome-WM
 #exec awesome  >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
 
+#exec /usr/local/bin/stumpwm
+#exec /usr/bin/spectrwm
+#exec /usr/bin/nimdow
