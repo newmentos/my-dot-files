@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.Xmodmap
@@ -51,6 +51,11 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 #eval $(ssh-agent) &
 
 export GDK_CORE_DEVICE_EVENTS=1
+eval `gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh` &
+export GNOME_KEYRING_CONTROL
+export SSH_AUTH_SOCK
+export GPG_AGENT_INFO
+export GNOME_KEYRING_PID
 
 #export G_FILENAME_ENCODING=@locale
 #export G_BROKEN_FILENAMES=1
@@ -160,6 +165,28 @@ shortwave &
 #xterm -geometry 80x20+494-0 &
 #exec xterm -geometry 80x66+0+0 -name login
 
+<<<<<<< HEAD
+=======
+#keychain ~/.ssh/id_ecdsa &
+#[ -f ~/.keychain/$HOSTNAME-sh ] && . ~/.keychain/$HOSTNAME-sh 2>/dev/null &
+#[ -f ~/.keychain/$HOSTNAME-sh-gpg ] && . ~/.keychain/$HOSTNAME-sh-gpg 2>/dev/null &
+#eval $(ssh-agent) &
+
+#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg) &
+#export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+#export GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
+#exec dbus-update-activation-environment --systemd DISPLAY &
+#exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+exec xmodmap ~/.xmodmap &
+exec xsetroot -cursor_name left_ptr &
+exec xset s off &
+exec xset b off &
+
+setxkbmap -model pc104 -layout us,ru -option grp:alt_shift_toggle &
+#( sleep 1s && bash /usr/local/bin/lemonbar.sh | lemonbar -p -F#FFFFFFFF -B#FF222222 -f "DejaVu Sans Mono"-8 -f FontAwesome-8) &
+#lxterminal &
+
+>>>>>>> Отредактированы настройки polybar
 #pantheon-files &
 #gsettings-data-convert &
 #xdg-user-dirs-gtk-update &
@@ -167,7 +194,6 @@ shortwave &
 #/usr/lib/gnome-user-share/gnome-user-share &
 
 #exec cerbere
-#evince $HOME'/Clouds/MailRuCloud/eBooks/Программирование/Lisp/ANSI Common Lisp.pdf' &
 #chromium &
 
 #emacs &
@@ -180,11 +206,19 @@ shortwave &
 #exec /usr/bin/budgie-desktop
 #exec xmonad
 #exec xrdb .Xresources & i3
+#exec emacs
 
 ### Start BSPWM
 $HOME/.config/polybar/launch.sh
+<<<<<<< HEAD
 exec sxhkd &
 exec bspwm
+=======
+#exec sxhkd &
+exec bspwm
+
+#exec ros ~/.local/bin/stumpwm.ros
+>>>>>>> Отредактированы настройки polybar
 
 ### Start StumpWM
 #exec ssh-agent /usr/local/bin/stumpwm >> ~/stumpwm.log
@@ -193,6 +227,7 @@ exec bspwm
 #exec ros run --load $HOME/.local/bin/startstump >> $xlog 2>&1
 #exec ssh-agent /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
 #exec /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
+<<<<<<< HEAD
 
 ### Start SpectrWM
 ###
@@ -202,6 +237,8 @@ exec bspwm
 ###
 #exec /usr/bin/nimdow
 
+=======
+>>>>>>> Отредактированы настройки polybar
 
 # Start Awesome-WM
 #exec awesome  >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
