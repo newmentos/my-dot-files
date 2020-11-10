@@ -70,16 +70,24 @@ font-2 = siji:pixelsize=10;1
 
 ;modules-left = bspwm i3
 modules-left = bspwm
+;modules-left = ewmh xwindow
 ;modules-center = mpd
 modules-center = xwindow
 ;modules-center = polybar-windows
 ;modules-center = polywins
 ; modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
-modules-right = alsa filesystem memory cpu temperature xkeyboard date powermenu
+modules-right = pulseaudio filesystem memory cpu temperature xkeyboard date powermenu
 
+tray-detached = false
+tray-offset-x = 0
+tray-offset-y = 0
 tray-position = right
 tray-padding = 2
+tray-maxsize = 20
+tray-scale = 1.0
 ;tray-background = #0063ff
+tray-background = ${colors.background}
+
 
 ;wm-restack = bspwm
 ;wm-restack = i3
@@ -139,7 +147,55 @@ label-urgent-margin = 0.5
 label-urgent-foreground = ${colors.red}
 label-urgent-underline = ${colors.red}
 
+; [bar/example]
+; ;monitor = ${env:MONITOR:HDMI-1}
+; width = 100%
+; height = 27
+; ;offset-x = 1%
+; ;offset-y = 1%
+; radius = 6.0
+; fixed-center = false
 
+; background = ${colors.background}
+; foreground = ${colors.foreground}
+
+; line-size = 3
+; line-color = #f00
+
+; border-size = 4
+; border-color = #00000000
+
+; padding-left = 0
+; padding-right = 2
+
+; module-margin-left = 1
+; module-margin-right = 2
+
+; font-0 = fixed:pixelsize=10;1
+; font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+; font-2 = siji:pixelsize=10;1
+
+; modules-left = bspwm i3
+; modules-center = mpd
+; modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
+
+; tray-position = right
+; tray-padding = 2
+; ;tray-background = #0063ff
+
+; ;wm-restack = bspwm
+; ;wm-restack = i3
+
+; ;override-redirect = true
+
+; ;scroll-up = bspwm-desknext
+; ;scroll-down = bspwm-deskprev
+
+; ;scroll-up = i3wm-wsnext
+; ;scroll-down = i3wm-wsprev
+
+; cursor-click = pointer
+; cursor-scroll = ns-resize
 
 [module/xwindow]
 type = internal/xwindow
@@ -368,7 +424,7 @@ label = %percentage_used%%
 
 [module/wlan]
 type = internal/network
-;interface = wlan0
+interface = wlan0
 ;interface = enp3s0
 ;interface = wlp0s18f2u6
 interval = 3.0
@@ -401,7 +457,7 @@ format-connected-prefix = " "
 format-connected-prefix-foreground = ${colors.foreground-alt}
 label-connected = %local_ip%
 
-;format-disconnected =
+format-disconnected =
 ;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected

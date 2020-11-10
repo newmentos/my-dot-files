@@ -39,13 +39,24 @@ exec xset b off &
 export LANG=ru_RU.UTF-8
 export MM_CHARSET=UTF-8
 
+eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh) &
+export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+exec dbus-update-activation-environment --systemd DISPLAY &
+export GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+#keychain ~/.ssh/id_ecdsa &
+#[ -f ~/.keychain/$HOSTNAME-sh ] && . ~/.keychain/$HOSTNAME-sh 2>/dev/null &
+#[ -f ~/.keychain/$HOSTNAME-sh-gpg ] && . ~/.keychain/$HOSTNAME-sh-gpg 2>/dev/null &
+#eval $(ssh-agent) &
+
 export GDK_CORE_DEVICE_EVENTS=1
 
 #export G_FILENAME_ENCODING=@locale
 #export G_BROKEN_FILENAMES=1
 
 #export OOO_FORCE_DESKTOP=gnome
-#export GDK_USE_XFT=1
+export GDK_USE_XFT=1
 
 #export GTK_IM_MODULE="scim"
 #export QT_IM_MODULE="scim"
@@ -95,6 +106,7 @@ picom -f --config ~/.config/picom/picom.conf &
 #volumeicon &
 #tilda &
 caffeine &
+#caffeine-indicator &
 #pidgin &
 #zoiper &
 #geany &
