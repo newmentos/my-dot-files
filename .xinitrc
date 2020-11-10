@@ -32,6 +32,10 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
+exec xsetroot -cursor_name left_ptr &
+exec xset s off &
+exec xset b off &
+
 export LANG=ru_RU.UTF-8
 export MM_CHARSET=UTF-8
 
@@ -47,6 +51,17 @@ export GDK_CORE_DEVICE_EVENTS=1
 #export QT_IM_MODULE="scim"
 #export XMODIFIERS="@im=SCIM"
 #scim -d &amp;
+
+#keychain ~/.ssh/id_ecdsa &
+#[ -f ~/.keychain/$HOSTNAME-sh ] && . ~/.keychain/$HOSTNAME-sh 2>/dev/null &
+#[ -f ~/.keychain/$HOSTNAME-sh-gpg ] && . ~/.keychain/$HOSTNAME-sh-gpg 2>/dev/null &
+#eval $(ssh-agent) &
+
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg) &
+export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+export GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
+exec dbus-update-activation-environment --systemd DISPLAY &
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 #setxkbmap -layout "us,ru,ua" -option grp:alt_shift_toggle,grp_led:scroll,terminate:ctrl_alt_bksp,caps:hyper,compose:menu &
 #setxkbmap -layout "us,ru" -option grp:alt_shift_toggle,grp_led:scroll,terminate:ctrl_alt_bksp,ctrl:nocaps,compose:menu &
@@ -72,11 +87,12 @@ numlockx on &
 #sbxkb &
 #fbxkb &
 gnome-calendar &
-xscreensaver -nosplash &
+#xscreensaver -nosplash &
+xautolock -locker "xlock -mode matrix" &
 #compton -b &
-#picom -f --config ~/.config/picom/picom.conf &
+picom -f --config ~/.config/picom/picom.conf &
 #parcellite &
-volumeicon &
+#volumeicon &
 #tilda &
 caffeine &
 #pidgin &
@@ -86,27 +102,31 @@ caffeine &
 #brave &
 #pcmanfm -d &
 #pcmanfm &
-nemo &
+#spacefm -d &
+#nemo &
+#lxterminal &
+#lxterminal -e htop &
+lxterminal -e yay &
 #lxterminal -e pacaur -Syu &
 #lxterminal -e sudo bauerbill -Syu --aur &
 #lxterminal -e $XDG_CONFIG_HOME/opt/webchain-miner/webchain-miner &
-#wine $HOME"/wine32/drive_c/Program Files/Microsoft Office/Office12/WINWORD.EXE" &
+#wine $HOME"/wine32/drive_c/Program Files/Microsoft Office/Office14/WINWORD.EXE" &
 wine $HOME"/wine32/drive_c/Program Files/Microsoft Office/Office14/EXCEL.EXE" &
 #pamac-tray &
-#lxterminal &
 #transmission-gtk &
 #thunderbird &
 #opera &
+#brave &
 #skypeforlinux &
 #doublecmd &
 #smplayer &
 #eclipse &
-#telegram-desktop &
+telegram-desktop &
 #icq &
 #yandex-disk-indicator &
 #nextcloud &
 #mailru-cloud &
-#env LD_LIBRARY_PATH=/opt/viber/lib viber &
+env LD_LIBRARY_PATH=/opt/viber/lib viber &
 #quiterss &
 #flatpak run com.viber.Viber &
 #virtualbox &
@@ -114,36 +134,19 @@ system-config-printer-applet &
 #godoc -http=":6060" &
 #gst123 /usr/share/sounds/freedesktop/stereo/service-login.oga &
 #radiotray &
+shortwave &
 #gradio &
 #xt7-player-mpv &
-shortwave &
 #udiskie -t &
 #lxterminal -e curseradio &
 #chromium &
 #gnome-contacts &
 #vivaldi-stable &
-lxterminal -e htop &
-lxterminal -e yay &
 #twm &
 #xclock -geometry 50x50-1+1 &
 #xterm -geometry 80x50+494+51 &
 #xterm -geometry 80x20+494-0 &
 #exec xterm -geometry 80x66+0+0 -name login
-
-#keychain ~/.ssh/id_ecdsa &
-#[ -f ~/.keychain/$HOSTNAME-sh ] && . ~/.keychain/$HOSTNAME-sh 2>/dev/null &
-#[ -f ~/.keychain/$HOSTNAME-sh-gpg ] && . ~/.keychain/$HOSTNAME-sh-gpg 2>/dev/null &
-#eval $(ssh-agent) &
-
-#eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg) &
-#export $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
-#export GNOME_KEYRING_CONTROL SSH_AUTH_SOCK GPG_AGENT_INFO GNOME_KEYRING_PID
-#exec dbus-update-activation-environment --systemd DISPLAY &
-#exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-exec xmodmap ~/.xmodmap &
-exec xsetroot -cursor_name left_ptr &
-exec xset s off &
-exec xset b off &
 
 #pantheon-files &
 #gsettings-data-convert &
@@ -167,9 +170,9 @@ exec xset b off &
 #exec xrdb .Xresources & i3
 
 ### Start BSPWM
-#$HOME/.config/polybar/launch.sh
-#exec sxhkd &
-#exec bspwm
+$HOME/.config/polybar/launch.sh
+exec sxhkd &
+exec bspwm
 
 ### Start StumpWM
 #exec ssh-agent /usr/local/bin/stumpwm >> ~/stumpwm.log
@@ -177,7 +180,16 @@ exec xset b off &
 #exec sbcl --load $HOME/.local/bin/startstump >> $xlog 2>&1
 #exec ros run --load $HOME/.local/bin/startstump >> $xlog 2>&1
 #exec ssh-agent /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
-exec /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
+#exec /usr/local/bin/stumpwm >> $HOME/.local/share/xorg/stumpwm.log 2>&1
+
+### Start SpectrWM
+###
+#exec /usr/bin/spectrwm
+
+### Start NimDow
+###
+#exec /usr/bin/nimdow
+
 
 # Start Awesome-WM
 #exec awesome  >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
