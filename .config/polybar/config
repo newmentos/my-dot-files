@@ -17,8 +17,6 @@
 ;==========================================================
 
 [colors]
-<<<<<<< HEAD
-=======
 ; Nord theme ============
 ;background = #282c34
 ;foreground = #abb2bf
@@ -38,11 +36,12 @@ volume-max = #bf616a
 ; =======================
 
 ; INTRCPTR theme ============
->>>>>>> Отредактированы настройки polybar
 ;background = ${xrdb:color0:#222}
+;background = #aa000000
 background = #222
 background-alt = #444
 ;foreground = ${xrdb:color7:#222}
+;foreground = #fff
 foreground = #dfdfdf
 foreground-alt = #555
 primary = #ffb52a
@@ -51,17 +50,14 @@ alert = #bd2c40
 
 [bar/mainbar-bspwm]
 monitor = ${env:MONITOR:HDMI-1}
-<<<<<<< HEAD
-=======
 ;monitor-fallback = HDMI1
 monitor-strict = false
 override-redirect = false
 bottom = false
 fixed-center = true
 ;fixed-center = false
->>>>>>> Отредактированы настройки polybar
 width = 100%
-height = 27
+height = 20
 ;offset-x = 1%
 ;offset-y = 1%
 radius = 6.0
@@ -70,9 +66,8 @@ radius = 6.0
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-<<<<<<< HEAD
 line-size = 3
-=======
+
 ; Background gradient (vertical steps)
 ;   background-[0-9]+ = #aarrggbb
 ;background-0 =
@@ -146,137 +141,8 @@ double-click-right =
 cursor-click =
 cursor-scroll =
 
-################################################################################
-################################################################################
-############                    MAINBAR-OPENBOX                     ############
-################################################################################
-################################################################################
 
-[bar/mainbar-openbox]
-monitor = ${env:MONITOR}
-;monitor-fallback = HDMI1
-width = 100%
-height = 30
-;offset-x = 1%
-;offset-y = 1%
-radius = 0.0
-fixed-center = true
-bottom = false
-separator = |
-
-background = ${colors.background}
-foreground = ${colors.foreground}
-
-line-size = 2
->>>>>>> Отредактированы настройки polybar
-line-color = #f00
-
-border-size = 4
-border-color = #00000000
-
-padding-left = 0
-padding-right = 2
-
-module-margin-left = 1
-module-margin-right = 2
-
-font-0 = fixed:pixelsize=10;1
-font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-2 = siji:pixelsize=10;1
-
-;font-0 = "Droid Sans:style=Regular:size=12;0"
-;font-0 = "DejaVu Sans:style=Book:size=12;0"
-;font-0 = "PT Mono:style=Regular:size=12;0"
-;font-0 = Misc Fixed Wide:pixelsize=10;1
-
-;font-1 = "Roboto Mono:style=Regular:size=11:weight=bold;2"
-;font-1 = FontAwesome:pixelsize=8;0
-;font-1 = FontAwesome5Free:style=Solid:pixelsize=10:antialias=false;3
-;
-;font-2 = "PT Astra Sans:style=Regular:size=11;1"
-;font-2 = FontAwesome:pixelsize=10;1
-;font-2 = FontAwesome5Brands:style=Solid:pixelsize=10:antialias=false;3
-
-;modules-left = bspwm i3
-modules-left = bspwm
-;modules-left = ewmh xwindow
-;modules-center = mpd
-modules-center = xwindow
-;modules-center = polybar-windows
-;modules-center = polywins
-; modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
-modules-right = pulseaudio filesystem memory cpu temperature xkeyboard date powermenu
-
-tray-detached = false
-tray-offset-x = 0
-tray-offset-y = 0
-tray-position = right
-tray-padding = 2
-tray-maxsize = 20
-tray-scale = 1.0
-;tray-background = #0063ff
-tray-background = ${colors.background}
-
-
-;wm-restack = bspwm
-;wm-restack = i3
-
-;override-redirect = true
-
-scroll-up = bspwm-desknext
-scroll-down = bspwm-deskprev
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
-
-cursor-click = pointer
-cursor-scroll = ns-resize
-
-[module/workspaces]
-type = internal/i3
-enable-click = true
-enable-scroll = false
-strip-wsnumbers = true
-format =  
-pin-workspaces = true
-
-; ws-icon-0 = 1; 
-; ws-icon-1 = 2;
-; ws-icon-2 = 3;♪
-; ws-icon-3 = 4;
-; ws-icon-4 = 5;
-; ws-icon-5 = 6;
-; ws-icon-6 = 7;
-; ;ws-icon-9 = 10;
-
-ws-icon-0 = 1;A
-ws-icon-1 = 2;B
-ws-icon-2 = 3;C
-ws-icon-3 = 4;D
-ws-icon-4 = 5;E
-ws-icon-5 = 6;F
-ws-icon-6 = 7;G
-
-label-focused = %name%
-label-focused-padding = 2
-label-focused-margin = 0.5
-label-focused-foreground = ${colors.white}
-label-focused-underline = ${colors.white}
-
-label-unfocused = %name%
-label-unfocused-padding = 2
-label-unfocused-margin = 0.5
-label-unfocused-underline = ${colors.l_gray}
-label-visible-padding = 2
-label-visible-margin = 0.5
-
-label-urgent = %name%
-label-urgent-padding = 2
-label-urgent-margin = 0.5
-label-urgent-foreground = ${colors.red}
-label-urgent-underline = ${colors.red}
-
-; [bar/example]
+; [bar/mainbar-bspwm]
 ; ;monitor = ${env:MONITOR:HDMI-1}
 ; width = 100%
 ; height = 27
@@ -462,78 +328,78 @@ interval = 1
 ; wm_border_width = 1
 
 
-[module/i3]
-type = internal/i3
-format = <label-state> <label-mode>
-index-sort = true
-wrapping-scroll = false
+; [module/i3]
+; type = internal/i3
+; format = <label-state> <label-mode>
+; index-sort = true
+; wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
 
-label-mode-padding = 2
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
+; label-mode-padding = 2
+; label-mode-foreground = #000
+; label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
-label-focused = %index%
-label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
-label-focused-padding = 2
+; label-focused = %index%
+; label-focused-background = ${colors.background-alt}
+; label-focused-underline= ${colors.primary}
+; label-focused-padding = 2
 
 ; unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
-label-unfocused-padding = 2
+; label-unfocused = %index%
+; label-unfocused-padding = 2
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %index%
-label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = ${self.label-focused-padding}
+; label-visible = %index%
+; label-visible-background = ${self.label-focused-background}
+; label-visible-underline = ${self.label-focused-underline}
+; label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-label-urgent = %index%
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 2
+; label-urgent = %index%
+; label-urgent-background = ${colors.alert}
+; label-urgent-padding = 2
 
 ; Separator in between workspaces
 ; label-separator = |
 
 
-[module/mpd]
-type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+; [module/mpd]
+; type = internal/mpd
+; format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
+; icon-prev = 
+; icon-stop = 
+; icon-play = 
+; icon-pause = 
+; icon-next = 
 
-label-song-maxlen = 25
-label-song-ellipsis = true
+; label-song-maxlen = 25
+; label-song-ellipsis = true
 
-[module/xbacklight]
-type = internal/xbacklight
+; [module/xbacklight]
+; type = internal/xbacklight
 
-format = <label> <bar>
-label = BL
+; format = <label> <bar>
+; label = BL
 
-bar-width = 10
-bar-indicator = |
-bar-indicator-foreground = #fff
-bar-indicator-font = 2
-bar-fill = ─
-bar-fill-font = 2
-bar-fill-foreground = #9f78e1
-bar-empty = ─
-bar-empty-font = 2
-bar-empty-foreground = ${colors.foreground-alt}
+; bar-width = 10
+; bar-indicator = |
+; bar-indicator-foreground = #fff
+; bar-indicator-font = 2
+; bar-fill = ─
+; bar-fill-font = 2
+; bar-fill-foreground = #9f78e1
+; bar-empty = ─
+; bar-empty-font = 2
+; bar-empty-foreground = ${colors.foreground-alt}
 
-[module/backlight-acpi]
-inherit = module/xbacklight
-type = internal/backlight
-card = intel_backlight
+; [module/backlight-acpi]
+; inherit = module/xbacklight
+; type = internal/backlight
+; card = intel_backlight
 
 [module/cpu]
 type = internal/cpu
