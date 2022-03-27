@@ -17,31 +17,10 @@
 ;==========================================================
 
 [colors]
-; Nord theme ============
-;background = #282c34
-;foreground = #abb2bf
-;alert = #bd2c40
-volume-min = #a3be8c
-volume-med = #ebcb8b
-volume-max = #bf616a
-; =======================
-
-; Gotham theme ==========
-; background = #0a0f14
-; foreground = #99d1ce
-; alert = #d26937
-; volume-min = #2aa889
-; volume-med = #edb443
-; volume-max = #c23127
-; =======================
-
-; INTRCPTR theme ============
 ;background = ${xrdb:color0:#222}
-;background = #aa000000
 background = #222
 background-alt = #444
 ;foreground = ${xrdb:color7:#222}
-;foreground = #fff
 foreground = #dfdfdf
 foreground-alt = #555
 primary = #ffb52a
@@ -50,99 +29,126 @@ alert = #bd2c40
 
 [bar/mainbar-bspwm]
 monitor = ${env:MONITOR:HDMI-1}
-;monitor-fallback = HDMI1
-monitor-strict = false
-override-redirect = false
-bottom = false
-fixed-center = true
-;fixed-center = false
 width = 100%
-height = 20
+height = 27
 ;offset-x = 1%
 ;offset-y = 1%
 radius = 6.0
-;radius = 0.0
+fixed-center = false
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
 line-size = 3
+line-color = #f00
 
-; Background gradient (vertical steps)
-;   background-[0-9]+ = #aarrggbb
-;background-0 =
+border-size = 4
+border-color = #00000000
 
-line-size = 2
-line-color = #000000
+padding-left = 0
+padding-right = 2
 
-border-size = 0
-;border-left-size = 25
-;border-right-size = 25
-;border-top-size = 0
-;border-bottom-size = 25
-border-color = #000000
+module-margin-left = 1
+module-margin-right = 2
 
-padding-left = 1
-padding-right = 1
+font-0 = fixed:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
 
-module-margin-left = 0
-module-margin-right = 0
+;font-0 = "Droid Sans:style=Regular:size=12;0"
+;font-0 = "DejaVu Sans:style=Book:size=12;0"
+;font-0 = "PT Mono:style=Regular:size=12;0"
+;font-0 = Misc Fixed Wide:pixelsize=10;1
 
-;https://github.com/jaagr/polybar/wiki/Fonts
-font-0 = "UbuntuMono Nerd Font:size=10;2"
-font-1 = "UbuntuMono Nerd Font:size=16;3"
-font-2 = "Font Awesome 5 Free:style=Regular:pixelsize=8;1"
-font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=8;1"
-font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
+;font-1 = "Roboto Mono:style=Regular:size=11:weight=bold;2"
+;font-1 = FontAwesome:pixelsize=8;0
+;font-1 = FontAwesome5Free:style=Solid:pixelsize=10:antialias=false;3
+;
+;font-2 = "PT Astra Sans:style=Regular:size=11;1"
+;font-2 = FontAwesome:pixelsize=10;1
+;font-2 = FontAwesome5Brands:style=Solid:pixelsize=10:antialias=false;3
 
-;modules-left = i3 xwindow
-modules-left = xwindow
-modules-center = 
-;modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 pavolume arrow3 arch-aur-updates arrow2 date
-modules-right = arrow1 networkspeedup networkspeeddown arrow2 memory2 arrow3 cpu2 arrow2 arrow3 arrow2 date
+;modules-left = bspwm i3
+modules-left = bspwm
+;modules-left = ewmh xwindow
+;modules-center = mpd
+modules-center = xwindow
+;modules-center = polybar-windows
+;modules-center = polywins
+; modules-right = filesystem xbacklight alsa pulseaudio xkeyboard memory cpu wlan eth battery temperature date powermenu
+modules-right = filesystem alsa memory cpu temperature xkeyboard date powermenu
 
-separator = 
-
-;dim-value = 1.0
-
-tray-position = right
 tray-detached = false
-tray-maxsize = 20
-tray-background = ${colors.background}
 tray-offset-x = 0
 tray-offset-y = 0
-tray-padding = 4
+;tray-position = center
+tray-position = right
+tray-padding = 2
+tray-maxsize = 20
 tray-scale = 1.0
+;tray-background = #0063ff
+tray-background = ${colors.background}
 
-#i3: Make the bar appear below windows
+
+wm-restack = bspwm
 ;wm-restack = i3
-;override-redirect = true
 
-; Enable support for inter-process messaging
-; See the Messaging wiki page for more details.
-enable-ipc = true
+override-redirect = true
 
-; Fallback click handlers that will be called if
-; there's no matching module handler found.
-click-left =
-click-middle =
-click-right =
-scroll-up = i3wm-wsnext
-scroll-down = i3wm-wsprev
-double-click-left =
-double-click-middle =
-double-click-right =
+scroll-up = bspwm-desknext
+scroll-down = bspwm-deskprev
 
-; Requires polybar to be built with xcursor support (xcb-util-cursor)
-; Possible values are:
-; - default   : The default pointer as before, can also be an empty string (default)
-; - pointer   : Typically in the form of a hand
-; - ns-resize : Up and down arrows, can be used to indicate scrolling
-cursor-click =
-cursor-scroll =
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
 
+cursor-click = pointer
+cursor-scroll = ns-resize
 
-; [bar/mainbar-bspwm]
+[module/workspaces]
+type = internal/i3
+enable-click = true
+enable-scroll = false
+strip-wsnumbers = true
+format =  
+pin-workspaces = true
+
+; ws-icon-0 = 1; 
+; ws-icon-1 = 2;
+; ws-icon-2 = 3;♪
+; ws-icon-3 = 4;
+; ws-icon-4 = 5;
+; ws-icon-5 = 6;
+; ws-icon-6 = 7;
+; ;ws-icon-9 = 10;
+
+ws-icon-0 = 1;A
+ws-icon-1 = 2;B
+ws-icon-2 = 3;C
+ws-icon-3 = 4;D
+ws-icon-4 = 5;E
+ws-icon-5 = 6;F
+ws-icon-6 = 7;G
+
+label-focused = %name%
+label-focused-padding = 2
+label-focused-margin = 0.5
+label-focused-foreground = ${colors.white}
+label-focused-underline = ${colors.white}
+
+label-unfocused = %name%
+label-unfocused-padding = 2
+label-unfocused-margin = 0.5
+label-unfocused-underline = ${colors.l_gray}
+label-visible-padding = 2
+label-visible-margin = 0.5
+
+label-urgent = %name%
+label-urgent-padding = 2
+label-urgent-margin = 0.5
+label-urgent-foreground = ${colors.red}
+label-urgent-underline = ${colors.red}
+
+; [bar/example]
 ; ;monitor = ${env:MONITOR:HDMI-1}
 ; width = 100%
 ; height = 27
@@ -217,6 +223,10 @@ type = internal/fs
 interval = 25
 
 mount-0 = /
+mount-1 = /home
+mount-2 = /opt
+mount-3 = /var
+mount-4 = /tmp
 
 label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
 label-unmounted = %mountpoint% not mounted
@@ -328,78 +338,78 @@ interval = 1
 ; wm_border_width = 1
 
 
-; [module/i3]
-; type = internal/i3
-; format = <label-state> <label-mode>
-; index-sort = true
-; wrapping-scroll = false
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
 
-; label-mode-padding = 2
-; label-mode-foreground = #000
-; label-mode-background = ${colors.primary}
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
-; label-focused = %index%
-; label-focused-background = ${colors.background-alt}
-; label-focused-underline= ${colors.primary}
-; label-focused-padding = 2
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
 
 ; unfocused = Inactive workspace on any monitor
-; label-unfocused = %index%
-; label-unfocused-padding = 2
+label-unfocused = %index%
+label-unfocused-padding = 2
 
 ; visible = Active workspace on unfocused monitor
-; label-visible = %index%
-; label-visible-background = ${self.label-focused-background}
-; label-visible-underline = ${self.label-focused-underline}
-; label-visible-padding = ${self.label-focused-padding}
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-; label-urgent = %index%
-; label-urgent-background = ${colors.alert}
-; label-urgent-padding = 2
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
 
 ; Separator in between workspaces
 ; label-separator = |
 
 
-; [module/mpd]
-; type = internal/mpd
-; format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 
-; icon-prev = 
-; icon-stop = 
-; icon-play = 
-; icon-pause = 
-; icon-next = 
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
 
-; label-song-maxlen = 25
-; label-song-ellipsis = true
+label-song-maxlen = 25
+label-song-ellipsis = true
 
-; [module/xbacklight]
-; type = internal/xbacklight
+[module/xbacklight]
+type = internal/xbacklight
 
-; format = <label> <bar>
-; label = BL
+format = <label> <bar>
+label = BL
 
-; bar-width = 10
-; bar-indicator = |
-; bar-indicator-foreground = #fff
-; bar-indicator-font = 2
-; bar-fill = ─
-; bar-fill-font = 2
-; bar-fill-foreground = #9f78e1
-; bar-empty = ─
-; bar-empty-font = 2
-; bar-empty-foreground = ${colors.foreground-alt}
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #fff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
 
-; [module/backlight-acpi]
-; inherit = module/xbacklight
-; type = internal/backlight
-; card = intel_backlight
+[module/backlight-acpi]
+inherit = module/xbacklight
+type = internal/backlight
+card = intel_backlight
 
 [module/cpu]
 type = internal/cpu
@@ -596,19 +606,19 @@ label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
 menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = power off
-menu-0-1-exec = menu-open-2
+menu-0-0-exec = #powermenu.open.1
+menu-0-1 = poweroff
+menu-0-1-exec = #powermenu.open.2
 
 menu-1-0 = reboot
-menu-1-0-exec = systemctl reboot
+menu-1-0-exec = 'loginctl reboot'
 menu-1-1 = cancel
-menu-1-1-exec = menu-open-0
+menu-1-1-exec = #powermenu.open.0
 
 menu-2-0 = cancel
-menu-2-0-exec = menu-open-0
-menu-2-1 = power off
-menu-2-1-exec = systemctl poweroff
+menu-2-0-exec = #powermenu.open.0
+menu-2-1 = poweroff
+menu-2-1-exec = 'loginctl poweorff'
 
 [settings]
 screenchange-reload = true
