@@ -618,7 +618,7 @@ menu-1-1-exec = #powermenu.open.0
 menu-2-0 = cancel
 menu-2-0-exec = #powermenu.open.0
 menu-2-1 = poweroff
-menu-2-1-exec = 'loginctl poweorff'
+menu-2-1-exec = 'loginctl poweroff'
 
 [settings]
 screenchange-reload = true
